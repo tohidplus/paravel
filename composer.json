@@ -1,0 +1,27 @@
+{
+    "name": "tohidplus/paravel",
+    "description": "A package to run anonymous functions in parallel",
+    "type": "library",
+    "authors": [
+        {
+            "name": "Tohid Dadashnejad",
+            "email": "tohid.dadashnejad@gmail.com"
+        }
+    ],
+    "autoload": {
+        "psr-4": {
+            "Tohidplus\\Paravel\\": "src/"
+        }
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "Tohidplus\\Paravel\\ParavelServiceProvider"
+            ]
+        }
+    },
+    "minimum-stability": "dev",
+    "require": {
+        "jeremeamia/superclosure": "^2.4"
+    }
+}
