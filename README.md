@@ -1,3 +1,8 @@
+[![GitHub issues](https://img.shields.io/github/issues/tohidplus/paravel.svg)](https://github.com/tohidplus/paravel/issues)
+[![GitHub stars](https://img.shields.io/github/stars/tohidplus/paravel.svg)](https://github.com/tohidplus/paravel/stargazers)
+[![Total Downloads](https://img.shields.io/packagist/dt/tohidplus/paravel.svg)](https://packagist.org/packages/tohidplus/paravel)
+[![GitHub license](https://img.shields.io/github/license/tohidplus/paravel.svg)](https://github.com/tohidplus/mellat/blob/master/LICENSE.txt)
+
 # Paravel
 A Laravel package to run anonymous function in parallel
 ### Installation
@@ -30,32 +35,35 @@ return [
 ```php
 <?php
 use Tohidplus\Paravel\Paravel;
-$paravel=Paravel::create();
+$paravel = Paravel::create();
 $paravel->timeout(60);
 ```
 ### Usage
 ```php
+<?php
+
 namespace App\Http\Controllers;
 use Tohidplus\Paravel\Paravel;
 class SomeController extends Controller{
    
     public function index(){
-        $paravel=Paravel::create();
+        $paravel = Paravel::create();
         
-        $time=microtime(true);        
+        $time = microtime(true);        
 
         // Result is an instance of Collection   
-        $result=$paravel->add('label_1',function (){
+        $result = $paravel->add('label_1',function (){
             sleep(5);
             return 'Hello there';
         })->add('label_2',function (){
              sleep(5);
              return 'Hello there';
         })->run();
-        //
+
+        //Check the total execution time
         dump(microtime(true)-$time); // 5.* Secs
 
-        $label_1=$result->where('label','label_1')->first();
+        $label_1 = $result->where('label','label_1')->first();
         dump($label_1['status']); // If any exception was occurred, this will be false
         dump($label_1['result']);
         dump($label_1['error']); 
