@@ -4,7 +4,7 @@
 [![GitHub license](https://img.shields.io/github/license/tohidplus/paravel.svg)](https://github.com/tohidplus/mellat/blob/master/LICENSE.txt)
 
 # Paravel
-A Laravel package to run anonymous function in parallel
+A Laravel package to run anonymous functions in parallel
 ### Installation
 ```bash
 composer require tohidplus/paravel
