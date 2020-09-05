@@ -1,7 +1,7 @@
 [![GitHub issues](https://img.shields.io/github/issues/tohidplus/paravel.svg)](https://github.com/tohidplus/paravel/issues)
 [![GitHub stars](https://img.shields.io/github/stars/tohidplus/paravel.svg)](https://github.com/tohidplus/paravel/stargazers)
 [![Total Downloads](https://img.shields.io/packagist/dt/tohidplus/paravel.svg)](https://packagist.org/packages/tohidplus/paravel)
-[![GitHub license](https://img.shields.io/github/license/tohidplus/paravel.svg)](https://github.com/tohidplus/mellat/blob/master/LICENSE.txt)
+[![GitHub license](https://img.shields.io/github/license/tohidplus/paravel.svg)](https://github.com/tohidplus/paravel/blob/master/LICENSE.txt)
 
 # Paravel
 A Laravel package to run anonymous functions in parallel
