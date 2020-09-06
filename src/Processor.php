@@ -24,14 +24,6 @@ class Processor
     private array $config;
 
     /**
-     * @var string
-     */
-    private string $listen;
-    /**
-     * @var string
-     */
-    private string $reply;
-    /**
      * @var Serializer
      */
     private Serializer $serializer;
@@ -43,8 +35,6 @@ class Processor
      */
     public function __construct(array $config, Serializer $serializer)
     {
-        $this->listen = $this->randomQueue();
-        $this->reply = $this->randomQueue();
         $this->config = $config;
         $this->serializer = $serializer;
     }
@@ -96,14 +86,6 @@ class Processor
     private function clear()
     {
         $this->processes = [];
-    }
-
-    /**
-     * @return string
-     */
-    private function randomQueue()
-    {
-        return (string)Str::uuid();
     }
 
     /**
