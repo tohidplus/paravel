@@ -3,8 +3,8 @@
 [![Total Downloads](https://img.shields.io/packagist/dt/tohidplus/paravel.svg)](https://packagist.org/packages/tohidplus/paravel)
 [![GitHub license](https://img.shields.io/github/license/tohidplus/paravel.svg)](https://github.com/tohidplus/paravel/blob/master/LICENSE.txt)
 
-# Paravel
-A Laravel package to run anonymous functions in parallel
+# Parallel and Asynchronous functions in Laravel
+A Laravel package to run anonymous functions in parallel or asynchronously without need to install any extension.
 ### Installation
 ```bash
 composer require tohidplus/paravel
