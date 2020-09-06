@@ -4,38 +4,32 @@
 namespace Tohidplus\Paravel\Console\Commands;
 
 use Tohidplus\Paravel\Process;
-use Tohidplus\Paravel\Response;
 use Illuminate\Console\Command;
-use Illuminate\Redis\Connections\Connection;
+use Tohidplus\Paravel\Serializer;
 
 class Executor extends Command
 {
-    protected $signature = "parallel:run {listen} {reply}";
+    protected $signature = "parallel:run {process}";
     protected $description = "Runs parallel processes";
-    protected Connection $redis;
+    /**
+     * @var Serializer
+     */
+    private Serializer $serializer;
 
-    public function __construct(Connection $redis)
+    /**
+     * Executor constructor.
+     * @param Serializer $serializer
+     */
+    public function __construct(Serializer $serializer)
     {
         parent::__construct();
-        $this->redis = $redis;
+        $this->serializer = $serializer;
     }
 
     public function handle()
     {
-        [$queue, $message] = $this->redis->blpop($this->argument('listen'), 0);
-        $process = unserialize($message);
-        try {
-            /** @var Process $message */
-            $result = $process->handle();
-            $response = new Response($process->getLabel(), true, $result);
-        } catch (\Throwable $exception) {
-            $response = new Response($process->getLabel(), false, null, [
-                'code' => $exception->getCode(),
-                'file' => $exception->getFile(),
-                'line' => $exception->getLine(),
-                'message' => $exception->getMessage()
-            ]);
-        }
-        $this->redis->rpush($this->argument('reply'), serialize($response));
+        /** @var Process $process */
+        $process = $this->serializer->unserialize($this->argument('process'));
+        echo $this->serializer->serialize($process->handle());
     }
 }
