@@ -18,6 +18,8 @@ php artisan vendor:publish --provider="Tohidplus\Paravel\ParavelServiceProvider"
 Copy the config file `paravel.php` from `vendor/tohidplus/paravel` to `config` directory and configure it in `bootstrap/app.php`
 ```bash
 $app->configure('paravel');
+//
+$app->register(Tohidplus\Paravel\ParavelServiceProvider::class);
 ```
 #### Configuration
 ```php
