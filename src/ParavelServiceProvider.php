@@ -27,12 +27,7 @@ class ParavelServiceProvider extends ServiceProvider
         $config = config('paravel');
 
         $this->app->bind(Processor::class, function () use ($config) {
-            return new Processor(Redis::connection($config['redis_connection']), $config);
+            return new Processor($config,new Serializer());
         });
-        $this->app->when(Executor::class)
-            ->needs(Connection::class)
-            ->give(function () use ($config) {
-                return Redis::connection($config['redis_connection']);
-            });
     }
 }

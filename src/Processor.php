@@ -3,8 +3,6 @@
 
 namespace Tohidplus\Paravel;
 
-use Tohidplus\Paravel\Exceptions\ExecutorTimeoutException;
-use Illuminate\Redis\Connections\Connection;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Str;
 use Symfony\Component\Process\Process as SymphonyProcess;
@@ -16,29 +14,39 @@ class Processor
      */
     protected array $processes = [];
     /**
-     * @var Connection
+     * @var SymphonyProcess[]
      */
-    private Connection $redis;
-    private array $config;
+    protected array $sProcesses = [];
+
     /**
-     * @var mixed|null
+     * @var array
      */
-    private $timeout;
+    private array $config;
+
+    /**
+     * @var string
+     */
     private string $listen;
+    /**
+     * @var string
+     */
     private string $reply;
+    /**
+     * @var Serializer
+     */
+    private Serializer $serializer;
 
     /**
      * Processor constructor.
-     * @param Connection $redis
      * @param array $config
+     * @param Serializer $serializer
      */
-    public function __construct(Connection $redis, array $config)
+    public function __construct(array $config, Serializer $serializer)
     {
         $this->listen = $this->randomQueue();
         $this->reply = $this->randomQueue();
-        $this->redis = $redis;
         $this->config = $config;
-        $this->timeout = $config['waiting_timeout'];
+        $this->serializer = $serializer;
     }
 
     /**
@@ -63,10 +71,18 @@ class Processor
     }
 
     /**
-     * @return Collection
-     * @throws ExecutorTimeoutException
+     * @return void
      */
-    public function run(): Collection
+    public function run()
+    {
+        $this->runProcesses();
+        $this->clear();
+    }
+
+    /**
+     * @return ResponseList
+     */
+    public function wait()
     {
         $this->runProcesses();
         $results = $this->fetchResults();
@@ -96,27 +112,32 @@ class Processor
     private function runProcesses(): void
     {
         foreach ($this->processes as $process) {
-            $sProcess = new SymphonyProcess(["php", $this->config["artisan_path"], "parallel:run", $this->listen, $this->reply]);
+            $sProcess = new SymphonyProcess(["php", $this->config["artisan_path"], "parallel:run", $this->serializer->serialize($process)]);
+            $this->sProcesses[] = $sProcess;
             $sProcess->start();
-            $this->redis->rpush($this->listen, serialize($process));
         }
     }
 
     /**
-     * @return Collection
-     * @throws ExecutorTimeoutException
+     * @return ResponseList
      */
-    private function fetchResults(): Collection
+    private function fetchResults(): ResponseList
     {
-        $results = collect([]);
-        while ($results->count() < count($this->processes)) {
-            $response = $this->redis->blpop($this->reply, $this->timeout);
-            if (is_null($response)) {
-                throw new ExecutorTimeoutException();
+        $responses = new ResponseList([]);
+        while (count($this->sProcesses)) {
+            foreach ($this->sProcesses as $index => $sProcess) {
+                if (!$sProcess->isRunning()) {
+                    unset($this->sProcesses[$index]);
+                    $label = $this->processes[$index]->getLabel();
+                    if ($sProcess->isSuccessful()) {
+                        $responses->add(new Response($label, true, $this->serializer->unserialize($sProcess->getOutput())
+                        ));
+                    } else {
+                        $responses->add(new Response($label, false, null, ['output' => $sProcess->getOutput()]));
+                    }
+                }
             }
-            [$responseQueue, $response] = $response;
-            $results->add(unserialize($response)->toArray());
         }
-        return $results;
+        return $responses;
     }
 }
