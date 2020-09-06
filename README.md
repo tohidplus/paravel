@@ -3,8 +3,8 @@
 [![Total Downloads](https://img.shields.io/packagist/dt/tohidplus/paravel.svg)](https://packagist.org/packages/tohidplus/paravel)
 [![GitHub license](https://img.shields.io/github/license/tohidplus/paravel.svg)](https://github.com/tohidplus/paravel/blob/master/LICENSE.txt)
 
-# Paravel
-A Laravel package to run anonymous functions in parallel
+# Parallel and Asynchronous functions in Laravel
+A Laravel package to run anonymous functions in parallel or asynchronously without need to install any extension.
 ### Installation
 ```bash
 composer require tohidplus/paravel
@@ -18,6 +18,8 @@ php artisan vendor:publish --provider="Tohidplus\Paravel\ParavelServiceProvider"
 Copy the config file `paravel.php` from `vendor/tohidplus/paravel` to `config` directory and configure it in `bootstrap/app.php`
 ```bash
 $app->configure('paravel');
+//
+$app->register(Tohidplus\Paravel\ParavelServiceProvider::class);
 ```
 #### Configuration
 ```php
