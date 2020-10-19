@@ -3,10 +3,11 @@
 
 namespace Tohidplus\Paravel;
 
+use SuperClosure\Serializer;
 use Tohidplus\Paravel\Console\Commands\Executor;
-use Illuminate\Redis\Connections\Connection;
-use Illuminate\Support\Facades\Redis;
 use Illuminate\Support\ServiceProvider;
+use Tohidplus\Paravel\Process\ParallelProcessor;
+use Tohidplus\Paravel\Serializer\ParavelSerializer;
 
 class ParavelServiceProvider extends ServiceProvider
 {
@@ -26,8 +27,11 @@ class ParavelServiceProvider extends ServiceProvider
 
         $config = config('paravel');
 
-        $this->app->bind(Processor::class, function () use ($config) {
-            return new Processor($config,new Serializer());
+        $this->app->bind('paravel', function () use ($config) {
+            return new ParallelProcessor($config);
+        });
+        $this->app->singleton('paravel-serializer', function () {
+            return new ParavelSerializer(new Serializer());
         });
     }
 }

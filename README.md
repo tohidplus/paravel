@@ -24,7 +24,7 @@ $app->register(Tohidplus\Paravel\ParavelServiceProvider::class);
 #### Configuration
 ```php
 return [
-    'artisan_path' => env('PARAVEL_ARTISAN_PATH', '/var/www/artisan'),
+    'artisan_path' => env('PARAVEL_ARTISAN_PATH', base_path('artisan')),
 ];
 ```
 * Make sure the `artisan` path is correct.
@@ -32,13 +32,11 @@ return [
 ### Basic example
 ```php
 <?php
-use Tohidplus\Paravel\Paravel;
-
-$paravel = Paravel::create();
+use Tohidplus\Paravel\Facades\Paravel;
 
 $time = microtime(true);        
 
-$results = $paravel->add('label_1',function (){
+$results = Paravel::add('label_1',function (){
     sleep(5);
     return 'Hello there';
 })->add('label_2',function (){
@@ -52,10 +50,10 @@ dump(microtime(true)-$time); // 5.* Secs
 ### Run functions in background
 ```php
 <?php
-use Tohidplus\Paravel\Paravel;
 
-$paravel = Paravel::create();   
-$paravel->add('label_1',function (){
+use Tohidplus\Paravel\Facades\Paravel;
+   
+Paravel::add('label_1',function (){
     return 'Hello there';
 })->add('label_2',function (){
      return 'Hello again';
@@ -64,10 +62,10 @@ $paravel->add('label_1',function (){
 ### Helper methods
 ```php
 <?php
-use Tohidplus\Paravel\Paravel;
 
-$paravel = Paravel::create();   
-$results = $paravel->add('label_1',function (){
+use Tohidplus\Paravel\Facades\Paravel;
+
+$results = Paravel::add('label_1',function (){
     return 'Hello there';
 })->add('label_2',function (){
      return 'Hello again';
@@ -87,3 +85,7 @@ $results->succeeded();
 // Check if any of the processes was failed.
 $results->failed();
 ```
+> Notice: **Paravel** comes with **100 milliseconds** overhead by default. So before starting to use this package make sure the total execution time of processes is over 100ms.
+
+### Contribution
+Please feel free to open issues or have contribution.

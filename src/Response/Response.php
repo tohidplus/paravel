@@ -1,10 +1,11 @@
 <?php
 
 
-namespace Tohidplus\Paravel;
+namespace Tohidplus\Paravel\Response;
 
+use JsonSerializable;
 
-class Response implements \JsonSerializable
+class Response implements JsonSerializable
 {
     protected bool $status = true;
     protected array $error = [];
