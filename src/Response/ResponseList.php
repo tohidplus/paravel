@@ -1,10 +1,11 @@
 <?php
 
 
-namespace Tohidplus\Paravel;
+namespace Tohidplus\Paravel\Response;
 
 
 use Illuminate\Support\Collection;
+use Tohidplus\Paravel\Process\Process;
 
 class ResponseList
 {
@@ -56,10 +57,11 @@ class ResponseList
     }
 
     /**
-     * @param Response $response
+     * @param Process $process
      */
-    public function add(Response $response)
+    public function add(Process $process)
     {
+        $response = new Response(...$this->getResponseArguments($process));
         $this->responses->add($response->toArray());
     }
 
@@ -77,5 +79,18 @@ class ResponseList
     public function failed(): bool
     {
         return !$this->succeeded();
+    }
+
+
+    /**
+     * @param Process $process
+     * @return array
+     */
+    private function getResponseArguments(Process $process): array
+    {
+        if ($process->isSuccessful()) {
+            return [$process->label(), true, $process->getOutput()];
+        }
+        return [$process->label(), false, null, ['output' => $process->getOutput()]];
     }
 }
