@@ -1,6 +1,7 @@
 [![GitHub issues](https://img.shields.io/github/issues/tohidplus/paravel.svg)](https://github.com/tohidplus/paravel/issues)
 [![GitHub stars](https://img.shields.io/github/stars/tohidplus/paravel.svg)](https://github.com/tohidplus/paravel/stargazers)
 [![Total Downloads](https://img.shields.io/packagist/dt/tohidplus/paravel.svg)](https://packagist.org/packages/tohidplus/paravel)
+[![Code Quality](https://img.shields.io/scrutinizer/quality/g/tohidplus/paravel/master)](https://scrutinizer-ci.com/g/tohidplus/paravel)
 [![GitHub license](https://img.shields.io/github/license/tohidplus/paravel.svg)](https://github.com/tohidplus/paravel/blob/master/LICENSE.txt)
 
 # Parallel and Asynchronous functions in Laravel
