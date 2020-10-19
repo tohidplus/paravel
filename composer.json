@@ -2,6 +2,7 @@
     "name": "tohidplus/paravel",
     "description": "A package to run anonymous functions in parallel",
     "type": "library",
+    "license": "MIT",
     "authors": [
         {
             "name": "Tohid Dadashnejad",
